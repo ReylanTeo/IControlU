@@ -9,7 +9,7 @@ if "%PROCESSOR_ARCHITECTURE%" EQU "amd64" (
 if '%ERRORLEVEL%' NEQ '0' (
     echo Getting administrative privileges...
     goto UACPrompt
-) else ( goto gotAdmin )
+) else ( goto GotAdmin )
 
 :UACPrompt
     echo Set UAC = CreateObject^("Shell.Application"^) > "%TEMP%\Upgrade.vbs"
@@ -20,6 +20,6 @@ if '%ERRORLEVEL%' NEQ '0' (
     del "%temp%\Upgrade.vbs"
     exit /B
 
-:gotAdmin
+:GotAdmin
     pushd "%CD%"
     CD /D "%~dp0"
