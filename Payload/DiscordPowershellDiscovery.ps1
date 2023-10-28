@@ -2,19 +2,20 @@
 # TODO: Need to implement VPS, Fix textfile format, Make the DiscordWebhook in Installer instead
 
 # Get IPv4 address of the machine
-# Define the string to look for in ipconfig output
-$ipAddressString = "IPv4 Address"
-# Use ipconfig to retrieve the IP address
+# Run ipconfig and store the output in a variable
 $ipconfigOutput = ipconfig
-$ipv4Address = $ipconfigOutput | Select-String -Pattern $ipAddressString | ForEach-Object { $_.ToString() -split ':' } | ForEach-Object { $_.Trim() } | Select-Object -Last 1
-# Check if $ipv4Address is null or empty
-if ([string]::IsNullOrEmpty($ipv4Address)) {
-    Write-Host "IPv4 address not found."
-} else {
-    Write-Host "Your IP Address is: $ipv4Address"
-    $IPAddress = $ipv4Address
-}
 
+# Search for the "IPv4 Address" line in the output
+$ipv4Line = $ipconfigOutput | Select-String "IPv4 Address"
+
+# Extract the IPv4 address and store it in the $IPAddress variable
+if ($ipv4Line) {
+    $IPAddress = ($ipv4Line -split ':')[1].Trim()
+    Write-Host "Your IPv4 Address is: $IPAddress"
+} else {
+    $IPAddress = $null  # Set IPAddress to null if not found
+    Write-Host "IPv4 Address not found."
+}
 
 # Get the current user's username
 $Username = $env:USERNAME
