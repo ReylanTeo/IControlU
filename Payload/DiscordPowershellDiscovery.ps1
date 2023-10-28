@@ -5,8 +5,10 @@
 $ipAddressString = "IPv4 Address"
 # Uncomment the following line when using older versions of Windows without IPv6 support
 # $ipAddressString = "IP Address"
+Write-Host "Network Connection Test"
 $ipconfigOutput = ipconfig
-$IPAddress = $ipconfigOutput | Select-String -Pattern "IPv4 Address" | ForEach-Object { $_.ToString() -split ':' } | ForEach-Object { $_.Trim() } | Select-Object -Last 1
+$IPAddress = $ipconfigOutput | Select-String -Pattern $ipAddressString | ForEach-Object { $_.ToString() -split ':' } | ForEach-Object { $_.Trim() } | Select-Object -Last 1
+Write-Host "Your IP Address is: $IPAddress"
 
 
 # Get the current user's username
