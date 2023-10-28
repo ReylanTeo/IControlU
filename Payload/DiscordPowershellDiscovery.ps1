@@ -2,14 +2,15 @@
 # TODO: Need to implement VPS, Fix textfile format, Make the DiscordWebhook in Installer instead
 
 # Get IPv4 address of the machine
+# Attempt to get IPv4 address using Get-NetIPAddress
 $IPAddress = Get-NetIPAddress |
     Where-Object { $_.AddressFamily -eq "IPv4" -and ($_.InterfaceAlias -match "Wi-Fi|Wireless|Ethernet|Local Area Connection") } |
     Select-Object -ExpandProperty IPAddress
 
-if ($IPAddress -eq $null) {
+# Check if $IPAddress is null or empty
+if ([string]::IsNullOrEmpty($IPAddress)) {
+    # If Get-NetIPAddress didn't return an address, try using ipconfig
     $ipAddressString = "IPv4 Address"
-    # Uncomment the following line when using older versions of Windows without IPv6 support
-    # $ipAddressString = "IP Address"
     Write-Host "Network Connection Test"
     $ipconfigOutput = ipconfig
     $ipv4Address = $ipconfigOutput | Select-String -Pattern $ipAddressString | ForEach-Object { $_.ToString() -split ':' } | ForEach-Object { $_.Trim() } | Select-Object -Last 1
