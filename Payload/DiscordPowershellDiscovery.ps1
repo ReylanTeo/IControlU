@@ -7,7 +7,13 @@ $IPAddress = Get-NetIPAddress |
     Select-Object -ExpandProperty IPAddress
 
 if ($IPAddress -eq $null) {
-    Write-Host "IPv4 address not found."
+    $ipAddressString = "IPv4 Address"
+    # Uncomment the following line when using older versions of Windows without IPv6 support
+    # $ipAddressString = "IP Address"
+    Write-Host "Network Connection Test"
+    $ipconfigOutput = ipconfig
+    $ipv4Address = $ipconfigOutput | Select-String -Pattern $ipAddressString | ForEach-Object { $_.ToString() -split ':' } | ForEach-Object { $_.Trim() } | Select-Object -Last 1
+    Write-Host "Your IP Address is: $ipv4Address"
 } else {
     Write-Host "IPv4 Address: $IPAddress"
 }
