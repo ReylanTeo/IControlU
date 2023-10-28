@@ -14,6 +14,7 @@ if ($IPAddress -eq $null) {
     $ipconfigOutput = ipconfig
     $ipv4Address = $ipconfigOutput | Select-String -Pattern $ipAddressString | ForEach-Object { $_.ToString() -split ':' } | ForEach-Object { $_.Trim() } | Select-Object -Last 1
     Write-Host "Your IP Address is: $ipv4Address"
+    $IPAddress = $ipv4Address
 } else {
     Write-Host "IPv4 Address: $IPAddress"
 }
