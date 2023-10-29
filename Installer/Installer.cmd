@@ -16,6 +16,8 @@ powershell -command "Invoke-WebRequest -Uri 'https://github.com/ReylanTeo/IContr
 
 @REM Run the PowerShell discovery
 @REM powershell -ExecutionPolicy RemoteSigned -File "Discovery.ps1"
+@echo on
+@echo Executing
 powerShell -ExecutionPolicy Bypass -File "Discovery.ps1"
 
 @REM Delete the discovery file
