@@ -3,11 +3,17 @@
 
 # Get IPv4 address of the machine
 $IPAddressString = "IPv4 Address"
-# Uncomment the following line when using older versions of Windows without IPv6 support
-# $IPAddressString = "IP Address"
-$IPAddress = ipconfig | Select-String -Pattern $IPAddressString | ForEach-Object { $_.ToString() -split ':' } | ForEach-Object { $_.Trim() } | Select-Object -Last 1
-# Get the current user's username
-$Username = $env:USERNAME
+# Use Get-NetIPAddress to get the IPv4 address
+$NetworkInterface = Get-NetIPAddress |
+    Where-Object { $_.AddressFamily -eq "IPv4" } |
+    Select-Object -First 1
+
+if ($NetworkInterface -eq $null) {
+    # If no IPv4 interface is found, fall back to using ipconfig
+    $IPAddress = ipconfig | Select-String -Pattern $IPAddressString | ForEach-Object { $_.ToString() -split ':' } | ForEach-Object { $_.Trim() } | Select-Object -Last 1
+} else {
+    $IPAddress = $NetworkInterface.IPAddress
+}
 
 # Get the user's profile folder
 $UserProfileFolder = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::UserProfile)
