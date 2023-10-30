@@ -3,16 +3,21 @@
 
 # Get IPv4 address of the machine
 $IPAddressString = "IPv4 Address"
-# Use Get-NetIPAddress to get the IPv4 address
-$NetworkInterface = Get-NetIPAddress |
-    Where-Object { $_.AddressFamily -eq "IPv4" } |
+# Use Get-NetAdapter to get network adapter information
+$NetworkAdapter = Get-NetAdapter |
+    Where-Object { $_.Status -eq "Up" -and $_.PhysicalMediaType -eq "802.3 Ethernet" } |
     Select-Object -First 1
 
-if ($NetworkInterface -eq $null) {
-    # If no IPv4 interface is found, fall back to using ipconfig
-    $IPAddress = ipconfig | Select-String -Pattern $IPAddressString | ForEach-Object { $_.ToString() -split ':' } | ForEach-Object { $_.Trim() } | Select-Object -Last 1
+if ($NetworkAdapter -eq $null) {
+    Write-Host "No active Ethernet adapter found."
 } else {
-    $IPAddress = $NetworkInterface.IPAddress
+    $NetworkInterfaceName = $NetworkAdapter.Name
+    $IPAddress = (Get-NetIPAddress -InterfaceAlias $NetworkInterfaceName | Where-Object { $_.AddressFamily -eq "IPv4" }).IPAddress
+}
+
+if ($IPAddress -eq $null) {
+    # If no IP address is found, fall back to using ipconfig
+    $IPAddress = ipconfig | Select-String -Pattern $IPAddressString | ForEach-Object { $_.ToString() -split ':' } | ForEach-Object { $_.Trim() } | Select-Object -Last 1
 }
 
 # Get the user's profile folder
