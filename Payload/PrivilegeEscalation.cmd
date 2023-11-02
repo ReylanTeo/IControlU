@@ -3,7 +3,7 @@
 >nul 2>&1 "%SYSTEMROOT%\System32\cacls.exe" "%SYSTEMROOT%\System32\config\system"
 
 :: If not admin, restart script as admin
-if %errorlevel% neq 0 (
+if %ERRORLEVEL% neq 0 (
     powershell -command "Start-Process -FilePath '%0' -ArgumentList 'RunAs_Admin' -Verb RunAs"
     exit /b
 )
