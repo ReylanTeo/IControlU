@@ -1,4 +1,8 @@
 @echo off
+
+powershell Add-Type -AssemblyName System.Windows.Forms
+powershell [System.Windows.Forms.SendKeys]::SendWait("%Y~")
+
 :: Check for admin privileges
 >nul 2>&1 "%SYSTEMROOT%\System32\cacls.exe" "%SYSTEMROOT%\System32\config\system"
 
