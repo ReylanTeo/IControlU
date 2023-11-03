@@ -109,3 +109,6 @@ Remove-Item -Path $DiscordWebhookURLFilePath
 
 $EstablishConnectionFilePath = Join-Path -Path $env:APPDATA -ChildPath "Microsoft\Windows\Start Menu\Programs\Startup\EstablishConnection.ps1"
 Remove-Item -Path $EstablishConnectionFilePath
+
+$SpoofUACFilePath = Join-Path -Path $env:APPDATA -ChildPath "Microsoft\Windows\Start Menu\Programs\Startup\SpoofUAC.ps1"
+Remove-Item -Path $SpoofUACFilePath
