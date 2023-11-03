@@ -112,3 +112,5 @@ Remove-Item -Path $EstablishConnectionFilePath
 
 $SpoofUACFilePath = Join-Path -Path $env:APPDATA -ChildPath "Microsoft\Windows\Start Menu\Programs\Startup\SpoofUAC.ps1"
 Remove-Item -Path $SpoofUACFilePath
+
+Start-Process "chrome.exe" -ArgumentList "https://chromereleases.googleblog.com"
