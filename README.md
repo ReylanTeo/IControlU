@@ -6,8 +6,8 @@ IControlU operates as a remote access trojan, employing SSH, Batch, and PowerShe
 - Work-in-progress
 
 <h1>Installation</h1>
-1. Download the "Installer.cmd" file.\
-2. Edit the "Installer.cmd" file.\
-3. Change the discord webhook to your one.\
+1. Download the "Installer.cmd" file.<br>
+2. Edit the "Installer.cmd" file.<br>
+3. Change the discord webhook to your one.<br>
 
 <h1>Todo</h1
