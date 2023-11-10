@@ -1,6 +1,6 @@
 .gitignore
 .gitattributes
-README.md
+Todo.txt
 .vscode
 Setup.py
 Main.py
