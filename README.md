@@ -15,3 +15,4 @@ IControlU operates as a remote access trojan, employing SSH, Batch, and PowerShe
 - Implementing VPS or VPN (Remote SSH)
 - Implement the crucial features
 - Option to connect locally or remotely
+- Implement Setup File
